@@ -1,0 +1,94 @@
+* Python3 native module - written in C++ with Pybind11.
+
+This example project contains a Python3 native module written in C++
+with the help of CMake and Pybind11, [[https://github.com/Microsoft/vcpkg][vcpkg (C++) Package manager]].
+
+Compile: 
+
+ + 1 - Install CMake and Python 3 devel (Example for Fedora Linux.)
+
+#+BEGIN_SRC sh 
+ $ dnf install cmake 
+ $ dnf install python3-devel 
+#+END_SRC
+
+ + 2 - Install vpckg package manager. 
+
+#+BEGIN_SRC sh 
+  $ mkdir -p ~/build && cd ~/build
+  $ git clone https://github.com/Microsoft/vcpkg
+  $ cd vcpkg/
+  $ sh bootstrap-vcpkg.sh 
+  $ ./vcpkg 
+#+END_SRC
+
+ + 3 - Install pybind11 package: 
+
+#+BEGIN_SRC sh 
+  $ cd ~/build
+  $ ./vcpkg install pybind11
+#+END_SRC
+
+ + 4 - Build the Python module. 
+
+#+BEGIN_SRC sh 
+  $ make install
+  cmake -B./cache -H. \
+          -DCMAKE_TOOLCHAIN_FILE=/home/archbox/build/vcpkg//scripts/buildsystems/vcpkg.cmake
+  -- The C compiler identification is GNU 8.2.1
+  -- The CXX compiler identification is GNU 8.2.1
+  -- Check for working C compiler: /usr/lib64/ccache/cc
+  -- Check for working C compiler: /usr/lib64/ccache/cc -- works
+  -- Detecting C compiler ABI info
+  -- Detecting C compiler ABI info - done
+
+   ...  ...  ...  ...  ...  ...  ...  ...  ...  ...  ...  ...  ... 
+
+  cmake --build ./cache --target install
+  gmake[1]: Entering directory '/home/archbox/root-scripts/vcpkg-test1/cache'
+  gmake[2]: Entering directory '/home/archbox/root-scripts/vcpkg-test1/cache'
+
+   ... ... ... 
+
+  [100%] Built target cashflow
+  gmake[2]: Leaving directory '/home/archbox/root-scripts/vcpkg-test1/cache'
+  Install the project...
+  -- Install configuration: ""
+  -- Installing: /home/archbox/root-scripts/vcpkg-test1/cashflow.cpython-36m-x86_64-linux-gnu.so
+  gmake[1]: Leaving directory '/home/archbox/root-scripts/vcpkg-test1/cache'
+
+#+END_SRC
+
+ + 5 - Test the native code Python module: cashflow.
+
+#+BEGIN_SRC sh 
+  # Check native module 
+  $ file cashflow.cpython-36m-x86_64-linux-gnu.so
+
+  cashflow.cpython-36m-x86_64-linux-gnu.so: ELF 64-bit LSB shared
+  object, x86-64, version 1 (SYSV), dynamically linked,
+  BuildID[sha1]=49febf0b87ef203341829d35c5189406bdcb7132, not stripped
+
+  # Test module 
+  $ python3 client1.py 
+  Testing cash flow class
+  Before adding 200
+  i  = 0 c  =    -100.00
+  i  = 1 c  =      10.00
+  i  = 2 c  =      20.00
+  i  = 3 c  =      30.00
+  i  = 4 c  =      15.00
+   Net present value => NPV(c, 8%) = -38.75354931215318
+  After adding 200
+  i  = 0 c  =    -100.00
+  i  = 1 c  =      10.00
+  i  = 2 c  =      20.00
+  i  = 3 c  =      30.00
+  i  = 4 c  =      15.00
+  i  = 5 c  =     200.00
+   Net present value => NPV(c, 8%) = 97.36309009459742
+#+END_SRC
+
+
+Pybind11 Documentation: 
+ + [[https://pybind11.readthedocs.io/en/stable/index.html][pybind11 — Seamless operability between C++11 and Python — pybind11 2.2.3 documentation]]
