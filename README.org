@@ -29,7 +29,16 @@ Compile:
   $ ./vcpkg install pybind11
 #+END_SRC
 
+Note: On Windows use the following command to install the library for
+64 bits target:
+
+#+BEGIN_SRC sh 
+  $ vcpkg install --triplet x64-windows pybind11l 
+#+END_SRC
+
  + 4 - Build the Python module. 
+
+Building on Linux:
 
 #+BEGIN_SRC sh 
   $ make install
@@ -57,6 +66,24 @@ Compile:
   -- Installing: /home/archbox/root-scripts/vcpkg-test1/cashflow.cpython-36m-x86_64-linux-gnu.so
   gmake[1]: Leaving directory '/home/archbox/root-scripts/vcpkg-test1/cache'
 
+#+END_SRC
+
+Building on Windows:
+
+#+BEGIN_SRC sh 
+  $ cmake -H. -Bbuild -G "Visual Studio 15 2017 Win64"
+  $ cmake --build build --target install
+
+  # Check produced files
+  $ ls cashflow.cp36-win_amd64.pyd
+  cashflow.cp36-win_amd64.pyd*
+
+  # Check file type => It is a DLL. 
+  $ "C:\Program Files\Git\usr\bin\file.exe" cashflow.cp36-win_amd64.pyd
+  cashflow.cp36-win_amd64.pyd: PE32+ executable (DLL) (console) x86-64, for MS Windows
+
+  $ "C:\Program Files\Git\usr\bin\du.exe" -h cashflow.cp36-win_amd64.pyd
+  884K    cashflow.cp36-win_amd64.pyd
 #+END_SRC
 
  + 5 - Test the native code Python module: cashflow.
