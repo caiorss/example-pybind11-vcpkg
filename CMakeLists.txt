@@ -1,21 +1,19 @@
 cmake_minimum_required(VERSION 3.9)
-set(CMAKE_VERBOSE_MAKEFILE ON)
-project(Windows_API_Experiments)
-
-#================================#
-#  Global Configuration          #
-#================================#
-
-# Set C++ 14 Standard
-set(CMAKE_CXX_STANDARD 17)
-set(CMAKE_CXX_STANDARD_REQUIRED ON)
-
-message("Environment variable: VCPKG_ROOT = $ENV{VCPKG_ROOT}")
 
 if(DEFINED ENV{VCPKG_ROOT} AND NOT DEFINED CMAKE_TOOLCHAIN_FILE)
   set(CMAKE_TOOLCHAIN_FILE "$ENV{VCPKG_ROOT}/scripts/buildsystems/vcpkg.cmake"
       CACHE STRING "")
 endif()
+
+#================================#
+#  Global Configuration          #
+#================================#
+project(Windows_API_Experiments)
+# Set C++ 14 Standard
+set(CMAKE_CXX_STANDARD 17)
+set(CMAKE_CXX_STANDARD_REQUIRED ON)
+
+message("Environment variable: VCPKG_ROOT = $ENV{VCPKG_ROOT}")
 
 find_package(pybind11 CONFIG REQUIRED)
 
